@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Payment Tracker</title>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="src.js"></script>
+    </head>
+
+    <body>
+        <p>
+            <div>
+                <span>Current balance: </span><span id="balance">...</span>
+            </div>
+        </p>
+        <p>
+            <form action="javascript:addPayment();">
+                <div>Add payment:</div>
+                <label>Amount: <input id="pv" name="payment-value" autofocus/></label>
+                <label>Comment: <input id="pc" name="payment-comment"/></label>
+                <input type="submit" value="Add"></input>
+                <div id="pMsg"></div>
+            </form>
+        </p>
+        <p>
+            <div>
+                <input type="button" value="Start new interval" onClick="startInterval()"/>
+                <div id="iMsg"/>
+            </div>
+        </p>
+        <p>
+            <table id="lp" cols="3">
+                <caption>List of last payments</caption>
+                <thead>
+                    <tr>
+                        <td>Date</td>
+                        <td>Amount</td>
+                        <td>Comment</td>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </p>
+    </body>
+</html>

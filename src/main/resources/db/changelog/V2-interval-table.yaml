@@ -1,0 +1,14 @@
+databaseChangeLog:
+  -  changeSet:
+       id:  2
+       author:  bsv
+       changes:
+         -  createTable:
+              tableName:  t_interval
+              columns:
+                -  column:
+                     name:  i_start
+                     type:  varchar(10)
+                     constraints:
+                       primaryKey:  true
+                       nullable:  false

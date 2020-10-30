@@ -1,0 +1,19 @@
+databaseChangeLog:
+  -  changeSet:
+       id:  3
+       author:  bsv
+       changes:
+         -  createTable:
+              tableName:  t_daily_limit
+              columns:
+                -  column:
+                     name:  dl_start_date
+                     type:  varchar(10)
+                     constraints:
+                       primaryKey:  true
+                       nullable:  false
+                -  column:
+                     name:  dl_limit
+                     type:  decimal(8, 2)
+                     constraints:
+                       nullable:  false

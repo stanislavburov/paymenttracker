@@ -1,0 +1,28 @@
+databaseChangeLog:
+  -  changeSet:
+       id:  1
+       author:  bsv
+       changes:
+         -  createTable:
+              tableName:  t_payment
+              columns:
+                -  column:
+                     name:  id
+                     type:  int
+                     autoIncrement: true
+                     constraints:
+                       primaryKey:  true
+                       nullable:  false
+                -  column:
+                     name:  p_date
+                     type:  varchar(10)
+                     constraints:
+                       nullable:  false
+                -  column:
+                     name:  p_value
+                     type:  decimal(8, 2)
+                     constraints:
+                       nullable:  false
+                -  column:
+                     name:  p_comment
+                     type:  varchar(255)

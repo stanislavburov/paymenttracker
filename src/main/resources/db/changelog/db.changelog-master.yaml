@@ -1,0 +1,13 @@
+databaseChangeLog:
+  -  include:
+       file:  V1-payment-table.yaml
+       relativeToChangelogFile: true
+  -  include:
+       file:  V2-interval-table.yaml
+       relativeToChangelogFile: true
+  -  include:
+       file:  V3-daily_limit-table.yaml
+       relativeToChangelogFile: true
+  -  include:
+       file:  V4-default-daily-limit.sql
+       relativeToChangelogFile: true
