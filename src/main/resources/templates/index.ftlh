@@ -11,6 +11,9 @@
             <div>
                 <span>Current balance: </span><span id="balance">...</span>
             </div>
+            <div>
+                <span id="currentIntervalStats">...</span>
+            </div>
         </p>
         <p>
             <form action="javascript:addPayment();">

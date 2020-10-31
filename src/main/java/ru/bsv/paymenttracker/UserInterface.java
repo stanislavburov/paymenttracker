@@ -11,6 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Formatter;
 import java.util.List;
@@ -48,7 +49,7 @@ public class UserInterface {
         LocalDate intervalStartDate = dao.fetchCurrentIntervalStartDate();
         double expenses = dao.calcCurrentIntervalExpenses();
         long daysPassed = ChronoUnit.DAYS.between(intervalStartDate, LocalDate.now()) + 1; // Count the current day also by adding 1.
-        return new Formatter(Locale.ENGLISH).format("%.2f", ((daysPassed * dailyLimit) - expenses)).toString();
+        return formatExpense(((daysPassed * dailyLimit) - expenses));
     }
 
     @PostMapping(value = "start-interval")
@@ -63,11 +64,28 @@ public class UserInterface {
         return dao.listLastPayments(lastPaymentsSize);
     }
 
+    @PostMapping(value = "fetch-current-interval-stats", produces = "application/json")
+    @ResponseBody
+    public IntervalStats fetchCurrentIntervalStats() {
+        LocalDate intervalStartDate = dao.fetchCurrentIntervalStartDate();
+        long daysPassed = ChronoUnit.DAYS.between(intervalStartDate, LocalDate.now()) + 1; // Count the current day also by adding 1.
+        double expenses = dao.calcCurrentIntervalExpenses();
+        IntervalStats result = new IntervalStats();
+        result.setStartDate(intervalStartDate.format(DateTimeFormatter.ofPattern("dd.MM.uuuu")));
+        result.setDaysPassed(daysPassed);
+        result.setAvgDailyExpense(formatExpense(expenses / (double)daysPassed));
+        return result;
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public String handleException(Exception e) {
         LOGGER.error("Failure", e);
         return "Failure: " + e.toString();
+    }
+
+    private String formatExpense(double expense) {
+        return new Formatter(Locale.ENGLISH).format("%.2f", expense).toString();
     }
 }

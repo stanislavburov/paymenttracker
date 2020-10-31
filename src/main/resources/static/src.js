@@ -48,6 +48,7 @@ function setMsg(selector, msg) {
 
 function updateBalance() {
   setMsg('#balance', '...');
+  setMsg('#currentIntervalStats', '...');
   $.ajax({
     url: "fetch-balance",
     method: "post",
@@ -57,6 +58,16 @@ function updateBalance() {
     },
     error: function(result) {
       setMsg('#balance', 'Unable to calculate the current balance: ' + result.responseText);
+    }
+  });
+  $.ajax({
+    url: "fetch-current-interval-stats",
+    method: "post",
+    success: function(result) {
+      setMsg('#currentIntervalStats', `Current interval started on ${result.startDate}, since then ${result.daysPassed} days passed, average daily expense is ${result.avgDailyExpense}.`);
+    },
+    error: function(result) {
+      setMsg('#currentIntervalStats', 'Unable to fetch the stats for the current interval: ' + result.responseText);
     }
   });
 };
