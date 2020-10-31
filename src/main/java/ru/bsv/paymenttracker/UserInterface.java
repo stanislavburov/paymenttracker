@@ -27,11 +27,6 @@ public class UserInterface {
     @Value("${last.payments.size}")
     private int lastPaymentsSize;
 
-    @GetMapping
-    public String index() {
-        return "index";
-    }
-
     @PostMapping(value = "add-payment")
     public ResponseEntity<String> addPayment(@RequestBody PaymentDTO paymentDTO) {
         if (dao.fetchCurrentDailyLimit() < paymentDTO.getValue() && StringUtils.isEmpty(paymentDTO.getComment())) {
