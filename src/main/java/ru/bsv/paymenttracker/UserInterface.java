@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Formatter;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 public class UserInterface {
@@ -46,7 +48,7 @@ public class UserInterface {
         LocalDate intervalStartDate = dao.fetchCurrentIntervalStartDate();
         double expenses = dao.calcCurrentIntervalExpenses();
         long daysPassed = ChronoUnit.DAYS.between(intervalStartDate, LocalDate.now()) + 1; // Count the current day also by adding 1.
-        return "" + ((daysPassed * dailyLimit) - expenses);
+        return new Formatter(Locale.ENGLISH).format("%.2f", ((daysPassed * dailyLimit) - expenses)).toString();
     }
 
     @PostMapping(value = "start-interval")
