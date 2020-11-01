@@ -4,6 +4,11 @@
         <title>Payment Tracker</title>
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="src.js"></script>
+        <script>$(document).ready(function() {
+              updateBalance();
+              listLatestPayments();
+            });
+        </script>
     </head>
 
     <body>
@@ -31,6 +36,9 @@
             </div>
         </p>
         <p>
+            <a href="interval-payments">Full list of payments for the current interval</a>
+        </p>
+        <p>
             <table id="lp" cols="3">
                 <caption>List of last payments</caption>
                 <thead>
@@ -40,9 +48,7 @@
                         <td>Comment</td>
                     </tr>
                 </thead>
-                <tbody>
-
-                </tbody>
+                <tbody></tbody>
             </table>
         </p>
     </body>

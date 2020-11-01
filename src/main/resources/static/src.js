@@ -1,8 +1,3 @@
-$(document).ready(function() {
-  updateBalance();
-  listLatestPayments();
-});
-
 function addPayment() {
   setMsg('#pMsg', '');
   $.ajax({
@@ -73,8 +68,20 @@ function updateBalance() {
 };
 
 function listLatestPayments() {
+  return queryPayments("list-last-payments", 'lp');
+};
+
+function listIntervalPayments(intervalStartDate) {
+  var url = 'list-interval-payments';
+  if (intervalStartDate != null) {
+    url += '?intervalStartDate=' + intervalStartDate;
+  }
+  return queryPayments(url, 'ip', 'ipe');
+}
+
+function queryPayments(url, tableId, errorId) {
   $.ajax({
-    url: "list-last-payments",
+    url: url,
     method: "post",
     contentType: "application/json",
     success: function(result) {
@@ -85,7 +92,12 @@ function listLatestPayments() {
         var c = e.comment;
         rows.push(`<tr><td>${pd}</td><td>${v}</td><td>${c}</td></tr>`)
       });
-      $('#lp>tbody').html(rows.join(''));
+      $('#' + tableId + '>tbody').html(rows.join(''));
+    },
+    error: function(result) {
+      if(errorId) {
+        setMsg('#' + errorId, result.responseText)
+      }
     }
   });
-};
+}

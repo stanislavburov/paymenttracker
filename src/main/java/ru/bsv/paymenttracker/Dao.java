@@ -5,8 +5,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -15,6 +13,14 @@ public class Dao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    private static final RowMapper<PaymentDTO> PAYMENT_DTO_ROW_MAPPER = (rs, rowNum) -> {
+        PaymentDTO result = new PaymentDTO();
+        result.setPaymentDate(rs.getString("p_date"));
+        result.setValue(rs.getDouble("p_value"));
+        result.setComment(rs.getString("p_comment"));
+        return result;
+    };
 
     public void addPayment(double value, String comment) {
         jdbcTemplate.update(
@@ -63,17 +69,18 @@ public class Dao {
     public List<PaymentDTO> listLastPayments(int size) {
         return jdbcTemplate.query(
                 "select p_date, p_value, p_comment from t_payment where id >= (select max(id) from t_payment) - ? order by id desc",
-                new RowMapper<PaymentDTO>() {
-                    @Override
-                    public PaymentDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        PaymentDTO result = new PaymentDTO();
-                        result.setPaymentDate(rs.getString("p_date"));
-                        result.setValue(rs.getDouble("p_value"));
-                        result.setComment(rs.getString("p_comment"));
-                        return result;
-                    }
-                },
+                PAYMENT_DTO_ROW_MAPPER,
                 size
+        );
+    }
+
+    public List<PaymentDTO> listIntervalPayments(LocalDate intervalStartDate) {
+        if (intervalStartDate != null) {
+            throw new RuntimeException("Not yet implemented");
+        }
+        return jdbcTemplate.query(
+                "select p_date, p_value, p_comment from t_payment where p_date >= (select max(i_start) from t_interval) order by id desc",
+                PAYMENT_DTO_ROW_MAPPER
         );
     }
 }

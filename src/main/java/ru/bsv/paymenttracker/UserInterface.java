@@ -21,11 +21,17 @@ import java.util.Locale;
 public class UserInterface {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserInterface.class);
+    public static final DateTimeFormatter INTERVAL_START_DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.uuuu");
 
     @Autowired
     private Dao dao;
     @Value("${last.payments.size}")
     private int lastPaymentsSize;
+
+    @GetMapping(value = "interval-payments")
+    public String intervalPaymentsView() {
+        return "interval-payments";
+    }
 
     @PostMapping(value = "add-payment")
     public ResponseEntity<String> addPayment(@RequestBody PaymentDTO paymentDTO) {
@@ -59,6 +65,18 @@ public class UserInterface {
         return dao.listLastPayments(lastPaymentsSize);
     }
 
+    @PostMapping(value = "list-interval-payments")
+    @ResponseBody
+    public List<PaymentDTO> listIntervalPayments(@RequestParam(name = "intervalStartDate", required = false) String intervalStartDateAsString) {
+        LocalDate intervalStartDate;
+        if (intervalStartDateAsString == null) {
+            intervalStartDate = null;
+        } else {
+            intervalStartDate = INTERVAL_START_DATE_FORMATTER.parse(intervalStartDateAsString, LocalDate::from);
+        }
+        return dao.listIntervalPayments(intervalStartDate);
+    }
+
     @PostMapping(value = "fetch-current-interval-stats", produces = "application/json")
     @ResponseBody
     public IntervalStatsDTO fetchCurrentIntervalStats() {
@@ -66,7 +84,7 @@ public class UserInterface {
         long daysPassed = ChronoUnit.DAYS.between(intervalStartDate, LocalDate.now()) + 1; // Count the current day also by adding 1.
         double expenses = dao.calcCurrentIntervalExpenses();
         IntervalStatsDTO result = new IntervalStatsDTO();
-        result.setStartDate(intervalStartDate.format(DateTimeFormatter.ofPattern("dd.MM.uuuu")));
+        result.setStartDate(intervalStartDate.format(INTERVAL_START_DATE_FORMATTER));
         result.setDaysPassed(daysPassed);
         result.setAvgDailyExpense(formatExpense(expenses / (double)daysPassed));
         return result;
