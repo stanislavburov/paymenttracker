@@ -1,6 +1,6 @@
 package ru.bsv.paymenttracker;
 
-public class IntervalStats {
+public class IntervalStatsDTO {
     private String startDate;
     private long daysPassed;
     private String avgDailyExpense;

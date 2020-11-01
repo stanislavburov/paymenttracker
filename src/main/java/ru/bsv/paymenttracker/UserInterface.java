@@ -61,11 +61,11 @@ public class UserInterface {
 
     @PostMapping(value = "fetch-current-interval-stats", produces = "application/json")
     @ResponseBody
-    public IntervalStats fetchCurrentIntervalStats() {
+    public IntervalStatsDTO fetchCurrentIntervalStats() {
         LocalDate intervalStartDate = dao.fetchCurrentIntervalStartDate();
         long daysPassed = ChronoUnit.DAYS.between(intervalStartDate, LocalDate.now()) + 1; // Count the current day also by adding 1.
         double expenses = dao.calcCurrentIntervalExpenses();
-        IntervalStats result = new IntervalStats();
+        IntervalStatsDTO result = new IntervalStatsDTO();
         result.setStartDate(intervalStartDate.format(DateTimeFormatter.ofPattern("dd.MM.uuuu")));
         result.setDaysPassed(daysPassed);
         result.setAvgDailyExpense(formatExpense(expenses / (double)daysPassed));
