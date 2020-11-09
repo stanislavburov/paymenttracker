@@ -31,6 +31,7 @@ function startInterval() {
     success: function(result) {
       setMsg('#iMsg', 'Started a new interval');
       updateBalance();
+      listIntervalStats();
     },
     error: function(result) {
       setMsg('#iMsg', result.responseText);
