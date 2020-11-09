@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Component
@@ -81,6 +82,23 @@ public class Dao {
         return jdbcTemplate.query(
                 "select p_date, p_value, p_comment from t_payment where p_date >= (select max(i_start) from t_interval) order by id desc",
                 PAYMENT_DTO_ROW_MAPPER
+        );
+    }
+
+    public List<IntervalStatsDTO> listIntervalStatsWithoutCurrent() {
+        return jdbcTemplate.query(
+                "select interval_start, interval_finish, sum(p.p_value) as expenses from t_payment p right join (select i1.i_start as interval_start, min(i2.i_start) as interval_finish from t_interval i1, t_interval i2 where i1.i_start < i2.i_start group by i1.i_start) i on i.interval_start <= p.p_date and p.p_date < i.interval_finish group by interval_start, interval_finish order by interval_start desc;",
+                (rs, rowNum) -> {
+                    LocalDate intervalStart = LocalDate.parse(rs.getString("interval_start"));
+                    LocalDate intervalFinish = LocalDate.parse(rs.getString("interval_finish"));
+                    long daysPassed = ChronoUnit.DAYS.between(intervalStart, intervalFinish);
+                    double avgExpenses = rs.getDouble("expenses") / ((double) daysPassed);
+                    IntervalStatsDTO result = new IntervalStatsDTO();
+                    result.setStartDate(UserInterface.INTERVAL_START_DATE_FORMATTER.format(intervalStart));
+                    result.setDaysPassed(daysPassed);
+                    result.setAvgDailyExpense(UserInterface.formatExpense(avgExpenses));
+                    return result;
+                }
         );
     }
 }

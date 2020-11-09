@@ -9,6 +9,7 @@ function addPayment() {
       setMsg('#pMsg', 'Success');
       updateBalance();
       listLatestPayments();
+      listIntervalStats();
     },
     error: function(result) {
       setMsg('#pMsg', result.responseText);
@@ -98,6 +99,27 @@ function queryPayments(url, tableId, errorId) {
       if(errorId) {
         setMsg('#' + errorId, result.responseText)
       }
+    }
+  });
+}
+
+function listIntervalStats() {
+  setMsg('#lie', '');
+  $.ajax({
+    url: "list-interval-stats",
+    method: "post",
+    success: function(result) {
+      var rows = [];
+      result.forEach((e) => {
+        var sd = e.startDate;
+        var dp = e.daysPassed;
+        var ade = e.avgDailyExpense;
+        rows.push(`<tr><td>${sd}</td><td>${dp}</td><td>${ade}</td></tr>`)
+      });
+      $('#li>tbody').html(rows.join(''));
+    },
+    error: function(result) {
+      setMsg('#lie', result.responseText);
     }
   });
 }

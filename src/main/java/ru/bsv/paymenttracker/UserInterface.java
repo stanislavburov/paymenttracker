@@ -86,7 +86,15 @@ public class UserInterface {
         IntervalStatsDTO result = new IntervalStatsDTO();
         result.setStartDate(intervalStartDate.format(INTERVAL_START_DATE_FORMATTER));
         result.setDaysPassed(daysPassed);
-        result.setAvgDailyExpense(formatExpense(expenses / (double)daysPassed));
+        result.setAvgDailyExpense(formatExpense(expenses / (double) daysPassed));
+        return result;
+    }
+
+    @PostMapping(value = "list-interval-stats", produces = "application/json")
+    @ResponseBody
+    public List<IntervalStatsDTO> listIntervalStats() {
+        List<IntervalStatsDTO> result = dao.listIntervalStatsWithoutCurrent();
+        result.add(0, fetchCurrentIntervalStats());
         return result;
     }
 
@@ -98,7 +106,7 @@ public class UserInterface {
         return "Failure: " + e.toString();
     }
 
-    private String formatExpense(double expense) {
+    public static String formatExpense(double expense) {
         return new Formatter(Locale.ENGLISH).format("%.2f", expense).toString();
     }
 }

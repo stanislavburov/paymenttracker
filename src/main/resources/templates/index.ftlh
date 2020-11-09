@@ -7,6 +7,7 @@
         <script>$(document).ready(function() {
               updateBalance();
               listLatestPayments();
+              listIntervalStats();
             });
         </script>
     </head>
@@ -50,6 +51,20 @@
                 </thead>
                 <tbody></tbody>
             </table>
+        </p>
+        <p>
+            <table id="li" cols="3">
+                <caption>List of all interval statistics</caption>
+                <thead>
+                    <tr>
+                        <td>Interval start date</td>
+                        <td>Days passed</td>
+                        <td>Average daily expense</td>
+                    </tr>
+                </thead>
+                <tbody/>
+            </table>
+            <div id="lie"/>
         </p>
     </body>
 </html>
