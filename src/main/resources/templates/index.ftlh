@@ -26,7 +26,7 @@
                 <div>Add payment:</div>
                 <label>Amount: <input id="pv" name="payment-value" autofocus/></label>
                 <label>Comment: <input id="pc" name="payment-comment"/></label>
-                <input type="submit" value="Add"></input>
+                <input type="submit" value="Add"/>
                 <div id="pMsg"></div>
             </form>
         </p>
@@ -49,7 +49,7 @@
                         <td>Comment</td>
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody/>
             </table>
         </p>
         <p>
@@ -64,7 +64,7 @@
                 </thead>
                 <tbody/>
             </table>
-            <div id="lie"/>
+            <div id="lie"></div>
         </p>
     </body>
 </html>

@@ -20,7 +20,7 @@
                     <td>Comment</td>
                 </tr>
             </thead>
-            <tbody></tbody>
+            <tbody/>
         </table>
     </body>
     <div id="ipe"></div>
