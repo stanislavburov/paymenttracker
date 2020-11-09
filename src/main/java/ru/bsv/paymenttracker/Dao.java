@@ -16,8 +16,9 @@ public class Dao {
     private JdbcTemplate jdbcTemplate;
 
     private static final RowMapper<PaymentDTO> PAYMENT_DTO_ROW_MAPPER = (rs, rowNum) -> {
+        LocalDate startDate = LocalDate.parse(rs.getString("p_date"));
         PaymentDTO result = new PaymentDTO();
-        result.setPaymentDate(rs.getString("p_date"));
+        result.setPaymentDate(startDate.format(UserInterface.INTERVAL_START_DATE_FORMATTER));
         result.setValue(rs.getDouble("p_value"));
         result.setComment(rs.getString("p_comment"));
         return result;
