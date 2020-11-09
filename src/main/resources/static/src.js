@@ -80,6 +80,11 @@ function listIntervalPayments(intervalStartDate) {
   return queryPayments(url, 'ip', 'ipe');
 }
 
+function printIntervalPaymentTableCaption(intervalStartDate) {
+  var currentInterval = intervalStartDate == null;
+  setMsg('#ipc', `Full list of payments for${currentInterval ? ' current' : ''} interval${currentInterval ? '' : ' started on ' + intervalStartDate}`);
+}
+
 function queryPayments(url, tableId, errorId) {
   $.ajax({
     url: url,
@@ -114,7 +119,7 @@ function listIntervalStats() {
         var sd = e.startDate;
         var dp = e.daysPassed;
         var ade = e.avgDailyExpense;
-        rows.push(`<tr><td>${sd}</td><td>${dp}</td><td>${ade}</td></tr>`)
+        rows.push(`<tr><td>${sd}</td><td>${dp}</td><td>${ade}</td><td><a href='interval-payments?intervalStartDate=${sd}'>link</a></td></tr>`)
       });
       $('#li>tbody').html(rows.join(''));
     },

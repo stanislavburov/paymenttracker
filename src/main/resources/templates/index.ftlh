@@ -53,13 +53,14 @@
             </table>
         </p>
         <p>
-            <table id="li" cols="3">
+            <table id="li" cols="4">
                 <caption>List of all interval statistics</caption>
                 <thead>
                     <tr>
                         <td>Interval start date</td>
                         <td>Days passed</td>
                         <td>Average daily expense</td>
+                        <td>All payments</td>
                     </tr>
                 </thead>
                 <tbody/>

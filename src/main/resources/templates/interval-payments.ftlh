@@ -7,12 +7,13 @@
         <script>$(document).ready(function() {
               var intervalStartDate = new URLSearchParams(window.location.search).get('intervalStartDate');
               listIntervalPayments(intervalStartDate);
+              printIntervalPaymentTableCaption(intervalStartDate);
             });
         </script>
     </head>
     <body>
         <table id="ip" cols="3">
-            <caption>Full list of interval payments</caption>
+            <caption id="ipc">Full list of payments for interval</caption>
             <thead>
                 <tr>
                     <td>Date</td>
